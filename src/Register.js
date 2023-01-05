@@ -11,7 +11,7 @@ const Register = () => {
         e.preventDefault(); //the form won't be sent to action with this method 
 
         const data = {email, password}
-        axios.post('','data')
+        axios.post('http://localhost:4000/register', data, {withCredentials:true}); //Allows us to send cookie from React app to API
     }
 
     return (
