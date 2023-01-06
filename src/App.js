@@ -11,7 +11,7 @@ function App() {
   const [email, setEmail] = useState('');
 
   return (
-      <UserContext.Provider value={{email:''}}>
+      <UserContext.Provider value={{email, setEmail}}>
         <BrowserRouter>
           <div>
             <Link to={'/'}>Home</Link> |
