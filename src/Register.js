@@ -1,20 +1,23 @@
 import React from 'react'
 import { useState, useContext } from 'react'
 import axios from 'axios';
+import UserContext from "./UserContext";
 
 const Register = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const context = useContext(UserContext);
+    const user = useContext(UserContext);
 
     function registerUser(e) {
         e.preventDefault(); //the form won't be sent to action with this method 
 
         const data = {email, password};
         axios.post('http://localhost:4000/register', data, {withCredentials:true}) //Allows us to send cookie from React app to API, local host 4000 is where our express app is running
-            .then(response =>{});
+            .then(response =>{
+                user.setEmail(response.data.email);
+            });
     }
 
     return (

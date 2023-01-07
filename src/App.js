@@ -4,15 +4,30 @@ import Register from "./Register";
 import Login from './Login';
 import UserContext from './UserContext';
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import axios from 'axios';
 
 function App() {
 
   const [email, setEmail] = useState('');
 
+  useEffect(() => {
+    // axios.get('http://localhost:4000/user')
+  }, []);
+
+
   return (
       <UserContext.Provider value={{email, setEmail}}>
         <BrowserRouter>
+        <div>
+          {!!email && (
+            <div>Logged in as {email}</div>
+          )} 
+          {!email && ( //if we don't have email 
+            <div>Not logged in.</div>
+          )}
+        </div>
+        <hr />
           <div>
             <Link to={'/'}>Home</Link> |
             <Link to={'/login'}>Login</Link> |
