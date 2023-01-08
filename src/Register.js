@@ -1,32 +1,33 @@
-import React from 'react'
-import { useState, useContext } from 'react'
+import {useState, useContext} from 'react';
 import axios from 'axios';
 import UserContext from "./UserContext";
 
-const Register = () => {
+function Register() {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
 
-    const user = useContext(UserContext);
+  const user = useContext(UserContext);
 
-    function registerUser(e) {
-        e.preventDefault(); //the form won't be sent to action with this method 
+  function registerUser(e) {
+    e.preventDefault();
 
-        const data = {email, password};
-        axios.post('http://localhost:4000/register', data, {withCredentials:true}) //Allows us to send cookie from React app to API, local host 4000 is where our express app is running
-            .then(response =>{
-                user.setEmail(response.data.email);
-            });
-    }
+    const data = {email,password};
+    axios.post('http://localhost:3000/register', data, {withCredentials:true})
+      .then(response => {
+        user.setEmail(response.data.email);
+        setEmail('');
+        setPassword('');
+      });
+  }
 
-    return (
-        <form action="" onSubmit={(e => registerUser(e))}>
-            <input type="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value) }/><br />
-            <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value) } /><br />
-            <button type="submit">Register</button>
-        </form>
-    )
+  return (
+    <form action="" onSubmit={e => registerUser(e)}>
+      <input type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)}/><br />
+      <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)}/><br />
+      <button type="submit">register</button>
+    </form>
+  );
 }
 
-export default Register
+export default Register;

@@ -1,15 +1,13 @@
 import './App.css';
 import {BrowserRouter, Switch, Route, Link} from "react-router-dom";
+import {useState,useEffect} from 'react';
 import Register from "./Register";
-import Login from './Login';
-import UserContext from './UserContext';
-
-import {useState, useEffect} from 'react';
-import axios from 'axios';
+import UserContext from "./UserContext";
+import axios from "axios";
+import Login from "./Login";
 
 function App() {
-
-  const [email, setEmail] = useState('');
+  const [email,setEmail] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:4000/user', {withCredentials:true})
@@ -18,31 +16,38 @@ function App() {
       });
   }, []);
 
+  function logout() {
+    axios.post('http://localhost:4000/logout', {}, {withCredentials:true})
+      .then(() => setEmail(''));
+  }
 
   return (
-      <UserContext.Provider value={{email, setEmail}}>
-        <BrowserRouter>
+    <UserContext.Provider value={{email,setEmail}}>
+      <BrowserRouter>
         <div>
           {!!email && (
-            <div>Logged in as {email}</div>
-          )} 
-          {!email && ( //if we don't have email 
-            <div>Not logged in.</div>
+            <div>
+              Loged in as {email}
+              <button onClick={() => logout()}>Log out</button>
+            </div>
+          )}
+          {!email && (
+            <div>Not logged in</div>
           )}
         </div>
-        <hr />
-          <div>
-            <Link to={'/'}>Home</Link> |
-            <Link to={'/login'}>Login</Link> |
-            <Link to={'/register'}>Register</Link>
-          </div>
-          <Switch>
-            <Route exact path={'/register'} component={Register} />
-            <Route exact path={'/login'} component={Login} />
-          </Switch>
-          <hr/>
-        </BrowserRouter>
-      </UserContext.Provider>
+        <hr/>
+        <div>
+          <Link to={'/'}>Home</Link> |
+          <Link to={'/login'}>Login</Link> |
+          <Link to={'/register'}>Register</Link>
+        </div>
+        <Switch>
+          <Route exact path={'/register'} component={Register} />
+          <Route exact path={'/login'} component={Login} />
+        </Switch>
+        <hr/>
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 
